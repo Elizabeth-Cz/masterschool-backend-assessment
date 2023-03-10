@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { getPhotos, getPhotoById } = require('../controllers/photoController');
+const {
+  getPhotos,
+  getPhotoById,
+  getUserPhotos,
+} = require('../controllers/photoController');
 
 // GET /api/photos
 router.get('/', async (req, res) => {
@@ -10,8 +14,28 @@ router.get('/', async (req, res) => {
     console.log(photos);
     res.json(photoUrls);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json({ message: 'Server error. Please try again later.' });
+  }
+});
+
+router.get('/user/:username', async (req, res) => {
+  try {
+    const userPhotos = await getUserPhotos(req.params.username);
+    const data = userPhotos.map((photo) => {
+      return {
+        id: photo.id,
+        username: photo.user.username,
+        description: photo?.description || 'No description provided',
+        url: photo.urls.raw,
+      };
+    });
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error.response);
+    res
+      .status(error.response.status)
+      .json({ message: error.response.data.errors[0] });
   }
 });
 
@@ -19,9 +43,9 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const photo = await getPhotoById(req.params.id);
-    res.json(photo);
+    res.status(200).json(photo);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json({ message: 'Server error. Please try again later.' });
   }
 });

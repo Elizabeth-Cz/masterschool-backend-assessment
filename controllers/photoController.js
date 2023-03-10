@@ -7,30 +7,27 @@ const ACCESS_KEY = process.env.ACCESS_KEY;
 // @route GET /api/photos/
 // @access Public
 const getPhotos = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/photos/`, {
-      params: { client_id: ACCESS_KEY },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw new Error('Server error. Please try again later.');
-  }
+  const response = await axios.get(`${BASE_URL}/photos/`, {
+    params: { client_id: ACCESS_KEY },
+  });
+  return response.data;
 };
 
 // @desc Get a photo by id
 // @route GET /api/photos/:id
 // @access Public
 const getPhotoById = async (id) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/photos/${id}`, {
-      params: { client_id: ACCESS_KEY },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw new Error('Server error. Please try again later.');
-  }
+  const response = await axios.get(`${BASE_URL}/photos/${id}`, {
+    params: { client_id: ACCESS_KEY },
+  });
+  return response.data;
 };
 
-module.exports = { getPhotos, getPhotoById };
+const getUserPhotos = async (username) => {
+  const response = await axios.get(`${BASE_URL}/users/${username}/photos`, {
+    params: { client_id: ACCESS_KEY },
+  });
+  return response.data;
+};
+
+module.exports = { getPhotos, getPhotoById, getUserPhotos };
