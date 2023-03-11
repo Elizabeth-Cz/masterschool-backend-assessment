@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
   try {
     const photos = await getPhotos();
     const photoUrls = photos.map((photo) => photo.urls.raw);
-    console.log(photos);
     res.json(photoUrls);
   } catch (error) {
     console.log(error);
