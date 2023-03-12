@@ -45,7 +45,7 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(photo);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Server error. Please try again later.' });
+    res.status(404).json({ message: 'Not found.' });
   }
 });
 
